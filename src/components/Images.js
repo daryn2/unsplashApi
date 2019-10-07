@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Search from './Search'
 import Pagination from './Pagination'
-import * as constants from './constants/request-constants'
+import * as constants from '../constants/request-constants'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 

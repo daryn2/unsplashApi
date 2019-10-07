@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Images from './Images'
-import Search from './Search'
+import Images from './components/Images'
+import Search from './components/Search'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Show from './components/Show';
 
