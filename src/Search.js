@@ -22,7 +22,9 @@ class Search extends Component {
                     data: result.results
                 })
                 console.log(this.state.data);
-                
+            })
+            .then(result => {
+                this.props.changeFilterName(this.state.data)
             })
       }
 
@@ -37,7 +39,7 @@ class Search extends Component {
         const url = "https://api.unsplash.com/search/photos/?page=1&query=" + val + "&client_id=" + key;
         this.fetchData(url)
         console.log(this.state.imageFilter)
-        this.props.changeFilterName(this.state.data)
+        
     }
     handlePageChange(pageNumber) {
         console.log(`active page is ${pageNumber}`);

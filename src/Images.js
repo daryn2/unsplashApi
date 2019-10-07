@@ -1,20 +1,24 @@
 import React, { Component } from 'react'
 import Search from './Search'
-import Pagination from "react-js-pagination";
+import Pagination from './Pagination'
+import * as constants from './constants/request-constants'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+
+var url = constants.GET_REQUEST + "&page=" + 1
 
 class Images extends Component {
   constructor() {
       super()
       this.state = {
+          current_page : 1,
+          total : null,
           data: [],
           search: ''
-      }
+        }
   }
 
   componentDidMount() {
-    const key = "3f8793f782668dd552c445ae38f2790ce73ae547dceb82a73c756dfc8be6d338";
-    const url = "https://api.unsplash.com/photos/?page=2&client_id=" + key;
     this.fetchData(url)
   }
 
@@ -31,33 +35,50 @@ class Images extends Component {
             
         })
   }
+  handlePageChange = (current_page) => {
+    this.setState({
+        current_page : current_page
+    })
+    this.set_url(current_page)
+    this.fetchData(this.url)
+    
+  }
 
   handleClick = (val) => {
-    this.setState({
-        data: val
-    })
+    if (val.length > 0) {
+        this.setState({
+            data: val
+        })
+    }
+    else {
+        this.fetchData(url)
+    }
+  }
 
+  set_url = (current_page) => {
+     this.url = constants.GET_REQUEST + "&page=" + current_page;
   }
 
   render() {
         let filteredImages =  this.state.data 
         const result = filteredImages.map((entry, index) => {
             return ( 
-                <div className="p-2" key={index}>
-                    <img src={ entry.urls.small } alt={index}></img>
+                <div className="p-2 alignt-items-stretch" key={index}>
+                    <Link to={'/show/' + entry.id}>
+                        <img src={ entry.urls.small } alt={index}></img>
+                    </Link>
                 </div>
             )
         })
         return (
             <div>
                 <Search changeFilterName={this.handleClick.bind(this)}/>
+                
                 <div className="d-flex flex-wrap justify-content-center">{ result } </div>
-                <Pagination
-                        activePage = {1} 
-                        itemsCountPerPage = { 10 }
-                        totalItemsCount = { 200 }
-                        onChange={this.handlePageChange}
-                    />
+
+                <Pagination changePage={ this.handlePageChange.bind(this) }/>
+                
+            
             </div>  
         )
     }
